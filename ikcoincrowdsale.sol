@@ -30,7 +30,7 @@ contract IKcoinTokensCrowdsale {
      * @param purchaser who paid for the tokens
      * @param beneficiary who got the tokens
      * @param value bnbs paid for purchase
-     * @param IKcoinTokenAmount amount of Yetu tokens purchased
+     * @param IKcoinTokenAmount amount of ik tokens purchased
      */
     event TokenPurchase(
         address indexed purchaser,
@@ -92,9 +92,9 @@ contract IKcoinTokensCrowdsale {
         remainingIKcoinInStage[2] = 400000000 * 1e18; // 400M IKcoin will be sold during the Stage 2
         remainingIKcoinInStage[3] = 200000000 * 1e18; // 200M IKcoin will be sold during the Stage 3
 
-        ikcoinUSDPriceInStages[1] = 5000000000000000; //$0.005
-        ikcoinUSDPriceInStages[2] = 10000000000000000; //$0.01
-        ikcoinUSDPriceInStages[3] = 20000000000000000; //$0.02
+        ikcoinUSDPriceInStages[1] = 2000000000000000; //$0.002
+        ikcoinUSDPriceInStages[2] = 20000000000000000; //$0.02
+        ikcoinUSDPriceInStages[3] = 40000000000000000; //$0.04
 
         currentIKcoinTokenUSDPrice = ikcoinUSDPriceInStages[1];
 
@@ -103,6 +103,11 @@ contract IKcoinTokensCrowdsale {
     }
 
     // =============
+
+        // Change Price of each IKC
+    function changePrice(uint256 _usd) public onlyOwner {
+        currentIKcoinTokenUSDPrice = _usd;
+    }
 
     // Change Crowdsale Stage.
     function switchToNextStage() public onlyOwner {
@@ -124,7 +129,7 @@ contract IKcoinTokensCrowdsale {
 
     /**
      * @dev Validation of an incoming purchase. Use require statements to revert state when conditions are not met. Use super to concatenate validations.
-     * @param _beneficiary Address performing the YetuToken purchase
+     * @param _beneficiary Address performing the ik coin purchase
      */
     function _preValidatePurchase(address _beneficiary) internal pure {
         require(_beneficiary != address(0));
@@ -133,7 +138,7 @@ contract IKcoinTokensCrowdsale {
     /**
      * @dev Source of tokens. Override this method to modify the way in which the crowdsale ultimately gets and sends its tokens.
      * @param _beneficiary Address performing the IKcoinTokens purchase
-     * @param _tokenAmount Number of Yetu tokens to be purchased
+     * @param _tokenAmount Number of ikc tokens to be purchased
      */
     function _deliverTokens(address _beneficiary, uint256 _tokenAmount)
         internal
@@ -144,7 +149,7 @@ contract IKcoinTokensCrowdsale {
     /**
      * @dev Executed when a purchase has been validated and is ready to be executed. Not necessarily emits/sends tokens.
      * @param _beneficiary Address receiving the tokens
-     * @param _tokenAmount Number of Yetu tokens to be purchased
+     * @param _tokenAmount Number of ikc tokens to be purchased
      */
     function _processPurchase(address _beneficiary, uint256 _tokenAmount)
         internal
@@ -266,7 +271,7 @@ contract IKcoinTokensCrowdsale {
         emit BNBTransferred("Funds Withdrawn to Owner Account");
     }
 
-    function transferYetuOwnership_Principal(address _newOwner)
+    function transferIKCOwnership_Principal(address _newOwner)
         public
         onlyOwner
     {
@@ -350,7 +355,7 @@ contract IKcoinTokensCrowdsale {
         ikcoin.burn(amount);
     }
 
-    function mint_Principal(address account, uint256 amount) public onlyOwner {
-        ikcoin._mint(account, amount);
+    function mint_Principal(uint256 amount) public onlyOwner {
+        ikcoin.mint(amount);
     }
 }
