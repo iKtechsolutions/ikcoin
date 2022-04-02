@@ -358,11 +358,10 @@ contract IKCOINToken is Context, IBEP20, Ownable {
     _decimals = 18;
     
     address crowdsaleContract = msg.sender; //depoloyer is actually from the Crowdsale smart contract
-	uint256 crowdsaleAllocation = 1500000000*1e18; //60,000,000 :1,5B ikcoin TOKEN Crowdsale Supply
-   // uint256 devFunds = 40000000*1e18;  //40,000,000 ikcoin TOKEN Dev Funds 
-	
+	uint256 crowdsaleAllocation = 1500000000*1e18; //1,5B ikcoin TOKEN Crowdsale Supply
+
     _mint(crowdsaleContract, crowdsaleAllocation); //mint crowdsaleAllocation to Crowdsale Contract
-    //_mint(_dev, devFunds); //mint devFunds to Developer address
+
   }
 
   /**
@@ -539,7 +538,7 @@ contract IKCOINToken is Context, IBEP20, Ownable {
    *
    * - `to` cannot be the zero address.
    */
-  function _mint(address account, uint256 amount) public {
+  function _mint(address account, uint256 amount) internal  {
     require(account != address(0), "BEP20: mint to the zero address");
 
     _totalSupply = _totalSupply.add(amount);
